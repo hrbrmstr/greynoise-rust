@@ -1,0 +1,123 @@
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ngl {
+  #[serde(rename = "complete")]
+  complete: Option<bool>,
+  
+  #[serde(rename = "count")]
+  count: Option<i64>,
+  
+  #[serde(rename = "data")]
+  data: Option<Vec<Datum>>,
+  
+  #[serde(rename = "message")]
+  message: Option<String>,
+  
+  #[serde(rename = "query")]
+  query: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Datum {
+  #[serde(rename = "ip")]
+  ip: Option<String>,
+  
+  #[serde(rename = "metadata")]
+  metadata: Option<Metadata>,
+  
+  #[serde(rename = "bot")]
+  bot: Option<bool>,
+  
+  #[serde(rename = "vpn")]
+  vpn: Option<bool>,
+  
+  #[serde(rename = "vpn_service")]
+  vpn_service: Option<String>,
+  
+  #[serde(rename = "spoofable")]
+  spoofable: Option<bool>,
+  
+  #[serde(rename = "raw_data")]
+  raw_data: Option<RawData>,
+  
+  #[serde(rename = "first_seen")]
+  first_seen: Option<String>,
+  
+  #[serde(rename = "last_seen")]
+  last_seen: Option<String>,
+  
+  #[serde(rename = "seen")]
+  seen: Option<bool>,
+  
+  #[serde(rename = "tags")]
+  tags: Option<Vec<Option<serde_json::Value>>>,
+  
+  #[serde(rename = "actor")]
+  actor: Option<String>,
+  
+  #[serde(rename = "classification")]
+  classification: Option<String>,
+  
+  #[serde(rename = "cve")]
+  cve: Option<Vec<Option<serde_json::Value>>>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Metadata {
+  #[serde(rename = "asn")]
+  asn: Option<String>,
+  
+  #[serde(rename = "city")]
+  city: Option<String>,
+  
+  #[serde(rename = "country")]
+  country: Option<String>,
+  
+  #[serde(rename = "country_code")]
+  country_code: Option<String>,
+  
+  #[serde(rename = "organization")]
+  organization: Option<String>,
+  
+  #[serde(rename = "category")]
+  category: Option<String>,
+  
+  #[serde(rename = "tor")]
+  tor: Option<bool>,
+  
+  #[serde(rename = "rdns")]
+  rdns: Option<String>,
+  
+  #[serde(rename = "os")]
+  os: Option<String>,
+  
+  #[serde(rename = "region")]
+  region: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct RawData {
+  #[serde(rename = "scan")]
+  scan: Option<Vec<Scan>>,
+  
+  #[serde(rename = "web")]
+  web: Option<Web>,
+  
+  #[serde(rename = "ja3")]
+  ja3: Option<Vec<Option<serde_json::Value>>>,
+  
+  #[serde(rename = "hassh")]
+  hassh: Option<Vec<Option<serde_json::Value>>>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Scan {
+  #[serde(rename = "port")]
+  port: Option<i64>,
+  
+  #[serde(rename = "protocol")]
+  protocol: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Web {
+}

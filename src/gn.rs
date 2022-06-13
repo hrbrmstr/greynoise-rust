@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
-/// Retrieve the GreyNoise API client configuration from the local config file
+/// Retrieve the GreyNoise API client
+///  configuration from the local config file
 pub fn get_config(path: Option<String>) -> HashMap<String, HashMap<String, Option<String>>> {
 
   let map: HashMap<String, HashMap<String, Option<String>>>;
