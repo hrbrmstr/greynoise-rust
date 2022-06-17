@@ -1,6 +1,8 @@
 //! Make a request to the GreyNoise IP Quick Check API
 use crate::get;
 
+pub type MultiQuickCheck = Vec<QuickCheck>;
+
 /// Structure to deserialize GreyNoise Quick Check JSON.
 ///
 /// Any values inside `Option` are optional, and you should check if there is `Some` or `None` before using it.
@@ -21,6 +23,9 @@ pub struct QuickCheck {
 
 #[doc(hidden)]
 const QUICK_CHECK_CONTEXT_URL: &str = "https://api.greynoise.io/v2/noise/quick";
+
+#[doc(hidden)]
+const MULTI_QUICK_CHECK_CONTEXT_URL: &str = "https://api.greynoise.io/v2/noise/multi/quick";
 
 /// Function to retrieve list of GreyNoise tags and their respective metadata
 ///
@@ -45,6 +50,15 @@ pub async fn quick_check(ip: &str, key: Option<&str>) -> Result<QuickCheck, reqw
 
   let url = format!("{}/{}", QUICK_CHECK_CONTEXT_URL, ip);
   let res: Result<QuickCheck, reqwest::StatusCode> = get::query(url, key).await;
+
+  res
+
+}
+
+pub async fn multi_quick_check(ips: Vec<String>, key: Option<&str>) -> Result<MultiQuickCheck, reqwest::StatusCode> {
+
+  let url = format!("{}", MULTI_QUICK_CHECK_CONTEXT_URL);
+  let res: Result<MultiQuickCheck, reqwest::StatusCode> = get::post_query(url, ips, key).await;
 
   res
 

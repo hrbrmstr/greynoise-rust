@@ -154,7 +154,6 @@ pub struct HASSH {
 #[doc(hidden)]
 const IP_CONTEXT_URL: &str = "https://api.greynoise.io/v2/noise/context";
 
-
 /// Function to retrieve list of GreyNoise tags and their respective metadata
 ///
 /// Get more information about a given IP address. Returns time ranges, IP metadata 

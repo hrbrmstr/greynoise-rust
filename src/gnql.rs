@@ -4,109 +4,109 @@ use crate::get;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct QNQL {
   #[serde(rename = "complete")]
-  complete: bool,
+  pub complete: Option<bool>,
   
   #[serde(rename = "count")]
-  count: i64,
+  pub count: i64,
   
   #[serde(rename = "data")]
-  data: Vec<Datum>,
+  pub data: Vec<Datum>,
   
   #[serde(rename = "message")]
-  message: String,
+  pub message: String,
   
   #[serde(rename = "query")]
-  query: String,
+  pub query: String,
 
   #[serde(rename = "scroll")]
-  scroll: bool,
+  pub scroll: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Datum {
   #[serde(rename = "ip")]
-  ip: String,
+  pub ip: String,
   
   #[serde(rename = "metadata")]
-  metadata: Option<Metadata>,
+  pub metadata: Option<Metadata>,
   
   #[serde(rename = "bot")]
-  bot: Option<bool>,
+  pub bot: Option<bool>,
   
   #[serde(rename = "vpn")]
-  vpn: Option<bool>,
+  pub vpn: Option<bool>,
   
   #[serde(rename = "vpn_service")]
-  vpn_service: Option<String>,
+  pub vpn_service: Option<String>,
   
   #[serde(rename = "spoofable")]
-  spoofable: Option<bool>,
+  pub spoofable: Option<bool>,
   
   #[serde(rename = "raw_data")]
-  raw_data: Option<RawData>,
+  pub raw_data: Option<RawData>,
   
   #[serde(rename = "first_seen")]
-  first_seen: Option<String>,
+  pub first_seen: Option<String>,
   
   #[serde(rename = "last_seen")]
-  last_seen: Option<String>,
+  pub last_seen: Option<String>,
   
   #[serde(rename = "seen")]
-  seen: Option<bool>,
+  pub seen: Option<bool>,
   
   #[serde(rename = "tags")]
-  tags: Option<Vec<String>>,
+  pub tags: Option<Vec<String>>,
   
   #[serde(rename = "actor")]
-  actor: Option<String>,
+  pub actor: Option<String>,
   
   #[serde(rename = "classification")]
-  classification: Option<String>,
+  pub classification: Option<String>,
   
   #[serde(rename = "cve")]
-  cve: Option<Vec<String>>,
+  pub cve: Option<Vec<String>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Metadata {
   #[serde(rename = "asn")]
-  asn: Option<String>,
+  pub asn: Option<String>,
   
   #[serde(rename = "city")]
-  city: Option<String>,
+  pub city: Option<String>,
   
   #[serde(rename = "country")]
-  country: Option<String>,
+  pub country: Option<String>,
   
   #[serde(rename = "country_code")]
-  country_code: Option<String>,
+  pub country_code: Option<String>,
   
   #[serde(rename = "organization")]
-  organization: Option<String>,
+  pub organization: Option<String>,
   
   #[serde(rename = "category")]
-  category: Option<String>,
+  pub category: Option<String>,
   
   #[serde(rename = "tor")]
-  tor: Option<bool>,
+  pub tor: Option<bool>,
   
   #[serde(rename = "rdns")]
-  rdns: Option<String>,
+  pub rdns: Option<String>,
   
   #[serde(rename = "os")]
-  os: Option<String>,
+  pub os: Option<String>,
   
   #[serde(rename = "region")]
-  region: Option<String>,
+  pub region: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RawData {
   #[serde(rename = "scan")]
-  scan: Option<Vec<Scan>>,
+  pub scan: Option<Vec<Scan>>,
   
   #[serde(rename = "web")]
-  web: Option<Web>,
+  pub web: Option<Web>,
   
   #[serde(rename = "ja3")]
   pub ja3: Option<Vec<Option<JA3>>>,
@@ -118,19 +118,19 @@ pub struct RawData {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Scan {
   #[serde(rename = "port")]
-  port: Option<i64>,
+  pub port: Option<i64>,
   
   #[serde(rename = "protocol")]
-  protocol: Option<String>,
+  pub protocol: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Web {
   #[serde(rename = "paths")]
-  paths: Option<String>,
+  pub paths: Option<String>,
 
   #[serde(rename = "useragents")]
-  useragents: Option<String>,
+  pub useragents: Option<String>,
 }
 
 /// Structure to deserialize ja3 hash metadata of GreyNoise Tags Metadata JSON.
@@ -142,7 +142,7 @@ pub struct JA3 {
   pub fingerprint: Option<String>,
 
   #[serde(rename = "port")]
-    pub port: Option<i64>
+  pub port: Option<i64>
 }
 
 /// Structure to deserialize hassh base metadata of GreyNoise Tags Metadata JSON.
@@ -154,7 +154,7 @@ pub struct HASSH {
   pub fingerprint: Option<String>,
 
   #[serde(rename = "port")]
-    pub port: Option<i64>
+  pub port: Option<i64>
 }
 
 #[doc(hidden)]
@@ -171,10 +171,10 @@ const QNQL_QUERY_URL: &str = "https://api.greynoise.io/v2/experimental/gnql";
 /// # Errors
 /// If the call fails, it will return a `Err(StatusCode)`.
 /// To see the possible return values, check the [API docs](ttps://api.greynoise.io/v2/experimental/gnql).
-pub async fn gnql_query(query: &str, size: Option<i64>, scroll: Option<&str> key: Option<&str>) -> Result<QNQL, reqwest::StatusCode> {
+pub async fn gnql_query(query: &str, size: Option<i64>, scroll: Option<&str>, key: Option<&str>) -> Result<QNQL, reqwest::StatusCode> {
 
-  let size_param: String = if (Some(size) = s) format!("&size={}", s.to_string());
-  let scroll: String = if (Some(scroll) = s) format!("&scroll={}", s.to_string());
+  let size_param: String = if let Some(size) = size { format!("&size={}", size.to_string()) } else { format!("") };
+  let scroll: String = if let Some(scroll) = scroll { format!("&scroll={}", scroll.to_string()) } else { format!("") } ;
   let url = format!("{}?query={}{}{}", QNQL_QUERY_URL, query, size_param, scroll);
 
   let res: Result<QNQL, reqwest::StatusCode> = get::query(url, key).await;
